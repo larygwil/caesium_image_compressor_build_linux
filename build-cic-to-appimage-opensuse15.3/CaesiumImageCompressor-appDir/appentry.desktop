@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Categories=Qt;Graphics
+Name=Caesium Image Compressor
+Comment=Quickly reduce image files size (and resolution, if you want) 
+Exec=CaesiumImageCompressor
+Icon=logo
+
