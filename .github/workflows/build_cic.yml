@@ -91,12 +91,29 @@ jobs:
     - name: Prepare for AppImage
       run: |
         cp -ar  $RUNNER_WORKSPACE/out/ $RUNNER_WORKSPACE/AppDir
+        cp -ar  $GITHUB_WORKSPACE/AppDir/* $RUNNER_WORKSPACE/AppDir/
         cd $RUNNER_WORKSPACE/AppDir
         mkdir -p usr/bin usr/lib 
         mv "Caesium Image Compressor" usr/bin/CaesiumImageCompressor
         mv libcaesium.so usr/lib/
-        cp "resources/icons/logo.png" .
-        cp $GITHUB_WORKSPACE/appentry.dekstop .
+        
+    - name: Push to binaries branch
+      run: |
+        cd $GITHUB_WORKSPACE
+        git checkout binaries
+        git checkout .
+        mkdir -p latest-build_ubuntu-lts 
+        rm -rf latest-build_ubuntu-lts/* 
+        cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    latest-build_ubuntu-lts/
+        git add .
+        git commit -m 'upload built result files'
+        git push 
+        
+        
+        
+        
+        
+        
         
         
         
