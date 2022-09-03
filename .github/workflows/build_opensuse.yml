@@ -1,4 +1,4 @@
-name: Build on openSuse
+name: Build on Ubuntu LTS
 
 on:
   schedule:
@@ -57,5 +57,22 @@ jobs:
 
     - name: Show files after install Qt 6
       run: |
-        find /
+        find $GITHUB_WORKSPACE
+        find /usr
+        
+    - name: Install cargo
+      run: |
+        apt-get install -y cargo
+        
+    - name: Download CIC source
+      run: |
+        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.1.0.zip -O $GITHUB_WORKSPACE/CIC-source.zip
+        unzip $GITHUB_WORKSPACE/CIC-source.zip -d $GITHUB_WORKSPACE/CIC-source
+        
+    - name: Build CIC
+      run: |
+        cd $GITHUB_WORKSPACE/CIC-source
+        cmake -B build_dir -DCMAKE_PREFIX_PATH=$Qt6_DIR -DCMAKE_BUILD_TYPE=Release
+        cmake --build build_dir --config Release --target caesium_image_compressor
+        find build_dir
 
