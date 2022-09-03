@@ -40,6 +40,10 @@ jobs:
         ps axfj
         cat /proc/cpuinfo
         
+    - name: Install cargo
+      run: |
+        sudo apt-get install -y cargo
+        
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
@@ -55,14 +59,11 @@ jobs:
         dpkg --list
         df -Th
 
-    - name: Show files after install Qt 6
-      run: |
-        find $GITHUB_WORKSPACE
-        find /usr
+    #- name: Show files after install Qt 6
+      #run: |
+        #find $GITHUB_WORKSPACE
+        #find /usr
         
-    - name: Install cargo
-      run: |
-        sudo apt-get install -y cargo
         
     - name: Download CIC source
       run: |
@@ -72,6 +73,7 @@ jobs:
     - name: Build CIC
       run: |
         cd $GITHUB_WORKSPACE/CIC-source
+        cd `ls`
         cmake -B build_dir -DCMAKE_PREFIX_PATH=$Qt6_DIR -DCMAKE_BUILD_TYPE=Release
         cmake --build build_dir --config Release --target caesium_image_compressor
         find build_dir
