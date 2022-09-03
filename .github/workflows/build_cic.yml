@@ -8,14 +8,14 @@ on:
   
   workflow_dispatch:
 
-  push:
-    branches:
-      - ci
+  #push:
+    #branches:
+      #- ci
            
 jobs:
   build_cic:
     name: Build CIC
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: git checkout
       uses: actions/checkout@master
@@ -43,13 +43,6 @@ jobs:
     - name: Install cargo vulkan xkb
       run: |
         sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev
-        
-        
-     
-    - name: Install python3-setuptools
-      run: |
-        sudo apt-get install -y python3-setuptools
-       
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v3

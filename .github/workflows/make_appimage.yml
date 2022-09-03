@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  #push:
-    #branches:
-      #- ci
+  push:
+    branches:
+      - ci
            
 jobs:
   make_appimage:
@@ -36,9 +36,12 @@ jobs:
     - name: List CIC binary ldd before install dep 
       run: |
         cd latest-build_ubuntu-lts/out
-        ldd "Caesium Image Compressor"
-        echo ""
-        ldd libcaesium.so
+        ldd "Caesium Image Compressor" > ldd_before_dep.txt
+        ldd libcaesium.so >> ldd_before_dep.txt
+        sed -i 's/(.*)//g' ldd_before_dep.txt
+        cat ldd_before_dep.txt  | sort | uniq | sort | uniq > /tmp/ldd_before_dep.txt
+        cp /tmp/ldd_before_dep.txt ldd_before_dep.txt
+        find /lib/x86_64-linux-gnu/  | sort | uniq | sort | uniq > all-libs_before.txt
     
     - name: Install cargo vulkan xkb
       run: |
@@ -67,20 +70,28 @@ jobs:
     - name: List CIC binary ldd after install dep 
       run: |
         cd latest-build_ubuntu-lts/out
-        ldd "Caesium Image Compressor"
-        echo ""
-        ldd libcaesium.so
-        
-        
-    - name: Download linuxdeployqt
+        ldd "Caesium Image Compressor" > ldd_after_dep.txt
+        ldd libcaesium.so >> ldd_after_dep.txt
+        sed -i 's/(.*)//g' ldd_after_dep.txt
+        cat ldd_after_dep.txt  | sort | uniq | sort | uniq > /tmp/ldd_after_dep.txt
+        cp /tmp/ldd_after_dep.txt ldd_after_dep.txt
+        find /lib/x86_64-linux-gnu/ | sort | uniq | sort | uniq > all-libs_after.txt
+    
+    - name: push ldd list
       run: |
-        cd $RUNNER_WORKSPACE
-        wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+        git add .
+        git commit -m 'push all-libs & ldd'
+        git push
         
-    - name: Run linuxdeployqt
-      run: |
-        $RUNNER_WORKSPACE/linuxdeployqt-continuous-x86_64.AppImage $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir
+    #- name: Download linuxdeployqt
+      #run: |
+        #cd $RUNNER_WORKSPACE
+        #wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        #chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+        
+    #- name: Run linuxdeployqt
+      #run: |
+        #$RUNNER_WORKSPACE/linuxdeployqt-continuous-x86_64.AppImage $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir
         
         
         
