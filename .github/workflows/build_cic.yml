@@ -8,19 +8,19 @@ on:
   
   workflow_dispatch:
 
-  push:
-    branches:
-      - ci
+  #push:
+    #branches:
+      #- ci
            
 jobs:
-  my_first_job_id:
-    name: My first job
+  build_cic:
+    name: Build CIC
     runs-on: ubuntu-20.04
     steps:
-    - name: Job's checkout
+    - name: git checkout
       uses: actions/checkout@master
       
-    - name: Show some info and switch branch
+    - name: Show some info
       run: |
         uname -a
         cat /etc/os-release
@@ -69,6 +69,7 @@ jobs:
       run: |
         wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.1.0.zip -O $RUNNER_WORKSPACE/CIC-source.zip
         unzip $RUNNER_WORKSPACE/CIC-source.zip -d $RUNNER_WORKSPACE/CIC-source
+# TODO dynamic latest version
         
     - name: Build CIC
       run: |
@@ -77,7 +78,13 @@ jobs:
         export CIC_SOURCE_PATH="$PWD"
         cmake -B build_dir -DCMAKE_PREFIX_PATH=$Qt6_DIR -DCMAKE_BUILD_TYPE=Release
         cmake --build build_dir --config Release --target caesium_image_compressor
+        echo ""
         find build_dir
+        echo ""
+        ldd "build_dir/Caesium Image Compressor"
+        echo ""
+        ldd "build_dir/libcaesium-prefix/src/libcaesium/target/release/libcaesium.so" 
+# TODO export不会传到下一个步骤（step）   
 
     - name: Copy needed built files
       run: |
@@ -108,7 +115,7 @@ jobs:
         mkdir -p latest-build_ubuntu-lts 
         rm -rf latest-build_ubuntu-lts/* 
         cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    latest-build_ubuntu-lts/
-        git add .
+        git add latest-build_ubuntu-lts
         git commit -m 'upload built result files'
         git push 
         
