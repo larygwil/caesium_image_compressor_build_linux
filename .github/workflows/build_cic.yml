@@ -8,14 +8,14 @@ on:
   
   workflow_dispatch:
 
-  #push:
-    #branches:
-      #- ci
+  push:
+    branches:
+      - ci
            
 jobs:
   build_cic:
     name: Build CIC
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
     - name: git checkout
       uses: actions/checkout@master
