@@ -27,7 +27,7 @@ jobs:
         pwd
         ls -la
         git branch -a
-        git fetch origin main
+        git fetch origin binaries
         git branch -a
         git config user.name bot
         git config user.email bot@github.bot.none
