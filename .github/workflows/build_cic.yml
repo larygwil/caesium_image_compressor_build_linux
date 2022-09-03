@@ -44,6 +44,13 @@ jobs:
       run: |
         sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev
         
+        
+     
+    - name: Install python3-setuptools
+      run: |
+        sudo apt-get install -y python3-setuptools
+       
+        
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
