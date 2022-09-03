@@ -61,20 +61,43 @@ jobs:
 
     - name: Show files after install Qt 6
       run: |
-        find $GITHUB_WORKSPACE
+        find $RUNNER_WORKSPACE
      #   find /usr
         
         
     - name: Download CIC source
       run: |
-        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.1.0.zip -O $GITHUB_WORKSPACE/CIC-source.zip
-        unzip $GITHUB_WORKSPACE/CIC-source.zip -d $GITHUB_WORKSPACE/CIC-source
+        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.1.0.zip -O $RUNNER_WORKSPACE/CIC-source.zip
+        unzip $RUNNER_WORKSPACE/CIC-source.zip -d $RUNNER_WORKSPACE/CIC-source
         
     - name: Build CIC
       run: |
-        cd $GITHUB_WORKSPACE/CIC-source
+        cd $RUNNER_WORKSPACE/CIC-source
         cd `ls`
+        export CIC_SOURCE_PATH="$PWD"
         cmake -B build_dir -DCMAKE_PREFIX_PATH=$Qt6_DIR -DCMAKE_BUILD_TYPE=Release
         cmake --build build_dir --config Release --target caesium_image_compressor
         find build_dir
 
+    - name: Copy needed built files
+      run: |
+        pwd
+        mkdir -p $RUNNER_WORKSPACE/out
+        cp "build_dir/libcaesium-prefix/src/libcaesium/target/release/libcaesium.so" $RUNNER_WORKSPACE/out/
+        cp "build_dir/Caesium Image Compressor" $RUNNER_WORKSPACE/out/
+        cp -ar "resources/icons/icon."* "resources/icons/logo"*     $RUNNER_WORKSPACE/out/
+        find $RUNNER_WORKSPACE/out/
+        
+    - name: Prepare for AppImage
+      run: |
+        cp -ar  $RUNNER_WORKSPACE/out/ $RUNNER_WORKSPACE/AppDir
+        cd $RUNNER_WORKSPACE/AppDir
+        mkdir -p usr/bin usr/lib 
+        mv "Caesium Image Compressor" usr/bin/CaesiumImageCompressor
+        mv libcaesium.so usr/lib/
+        cp "resources/icons/logo.png" .
+        cp $GITHUB_WORKSPACE/appentry.dekstop .
+        
+        
+        
+        
