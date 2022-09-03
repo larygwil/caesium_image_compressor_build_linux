@@ -62,7 +62,7 @@ jobs:
         
     - name: Install cargo
       run: |
-        apt-get install -y cargo
+        sudo apt-get install -y cargo
         
     - name: Download CIC source
       run: |
