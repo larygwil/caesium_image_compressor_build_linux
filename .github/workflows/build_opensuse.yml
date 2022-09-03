@@ -15,7 +15,7 @@ on:
 jobs:
   my_first_job_id:
     name: My first job
-    runs-on: opensuse/leap:15.3 
+    runs-on: ubuntu-20.04
     steps:
     - name: Job's checkout
       uses: actions/checkout@master
@@ -27,13 +27,13 @@ jobs:
         pwd
         ls -la
         git branch -a
-        git fetch origin binaries
+        git fetch origin main
         git branch -a
         git config user.name bot
         git config user.email bot@github.bot.none
         git config --list
         env
-        zypper se
+        dpkg --list
         df -Th
         mount
         echo $$
@@ -43,12 +43,19 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.3.*'
+        version: '6.2.*'
         host: 'linux'
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
         archives: "qtbase qtsvg"
         setup-python: 'false'
 
-      
+    - name: Show info after install Qt6
+      run: |
+        dpkg --list
+        df -Th
+
+    - name: Show files after install Qt 6
+      run: |
+        find /
 
