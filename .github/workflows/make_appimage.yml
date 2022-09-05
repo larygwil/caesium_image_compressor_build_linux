@@ -93,6 +93,22 @@ jobs:
         git commit -m 'push all-libs & ldd'
         git push
         
+        
+    - name: Download Appimagetools
+      run: |
+        wget https://github.com/AppImage/AppImageKit/releases/download/latest/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
+        chmod a+x $RUNNER_WORKSPACE/appimagetool
+        wget https://github.com/AppImage/AppImageKit/releases/download/latest/AppRun-x86_64 -O $RUNNER_WORKSPACE/AppRun
+        chmod a+x $RUNNER_WORKSPACE/AppRun
+        
+    - name: Build AppImage and push
+      run: |
+        cp $RUNNER_WORKSPACE/AppRun $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/
+        $RUNNER_WORKSPACE/appimagetool $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir $GITHUB_WORKSPACE/CIC.AppImage
+        git add $GITHUB_WORKSPACE/CIC.AppImage
+        git commit -m 'push .AppImage file'
+        git push
+      
     #- name: Download linuxdeployqt
       #run: |
         #cd $RUNNER_WORKSPACE
