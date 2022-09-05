@@ -116,8 +116,8 @@ jobs:
         rm -rf latest-build_ubuntu-lts/* 
         cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    latest-build_ubuntu-lts/
         git add latest-build_ubuntu-lts
-        git commit -m 'upload built result files'
-        git push 
+        git commit -m 'upload built result files' || true
+        git push || true 
         
         
         

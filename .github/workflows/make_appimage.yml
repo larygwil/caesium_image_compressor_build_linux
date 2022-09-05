@@ -90,8 +90,8 @@ jobs:
     - name: push ldd list
       run: |
         git add latest-build_ubuntu-lts/out
-        git commit -m 'push all-libs & ldd'
-        git push
+        git commit -m 'push all-libs & ldd' || true
+        git push || true 
         
         
     - name: Download Appimagetools
@@ -106,8 +106,8 @@ jobs:
         cp $RUNNER_WORKSPACE/AppRun $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/
         $RUNNER_WORKSPACE/appimagetool $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir $GITHUB_WORKSPACE/CIC.AppImage
         git add $GITHUB_WORKSPACE/CIC.AppImage
-        git commit -m 'push .AppImage file'
-        git push
+        git commit -m 'push .AppImage file' || true
+        git push || true
       
     #- name: Download linuxdeployqt
       #run: |
