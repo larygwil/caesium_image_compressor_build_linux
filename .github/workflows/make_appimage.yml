@@ -104,7 +104,10 @@ jobs:
         while read -r line
         do
           cp -v "$line" .
-        done < /tmp/all-ldd.txt
+        done < $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/new_deps.txt
+        
+        cp -ar $QT_PLUGIN_PATH $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/
+
         cp $RUNNER_WORKSPACE/AppRun $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/
         $RUNNER_WORKSPACE/appimagetool $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir $GITHUB_WORKSPACE/CIC.AppImage
         git add $GITHUB_WORKSPACE/CIC.AppImage
