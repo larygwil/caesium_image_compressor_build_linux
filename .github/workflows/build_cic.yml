@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  #push:
-    #branches:
-      #- ci
+  push:
+    branches:
+      - ci
            
 jobs:
   build_cic:
@@ -51,6 +51,7 @@ jobs:
         host: 'linux'
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
+        modules: 'qtimageformats'
         archives: "qttranslations qttools qtsvg qtdeclarative qtbase icu"
         setup-python: 'false'
 
