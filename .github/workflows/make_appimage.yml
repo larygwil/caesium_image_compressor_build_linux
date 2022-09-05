@@ -81,7 +81,7 @@ jobs:
       run: |
         cd latest-build_ubuntu-lts/out
         comm -13 ldd_before_dep.txt ldd_after_dep.txt | sed 's/^.*=> //g' > new_deps.txt
-        cd $GITHUB_WORKSPACE/AppDir/usr/lib 
+        cd $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib 
         while read -r line
         do
           cp -v "$line" .
