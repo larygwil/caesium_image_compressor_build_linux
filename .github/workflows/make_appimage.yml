@@ -81,11 +81,7 @@ jobs:
       run: |
         cd latest-build_ubuntu-lts/out
         comm -13 ldd_before_dep.txt ldd_after_dep.txt | sed 's/^.*=> //g' > new_deps.txt
-        cd $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib 
-        while read -r line
-        do
-          cp -v "$line" .
-        done < $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/new_deps.txt
+        cat ldd_after_dep.txt | grep "=> /home/runner" | sed 's/^.*=> //g' > qt_deps.txt
     
     - name: push ldd list
       run: |
@@ -103,6 +99,11 @@ jobs:
         
     - name: Build AppImage and push
       run: |
+        cd $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib 
+        while read -r line
+        do
+          cp -v "$line" .
+        done < $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/qt_deps.txt      
         cp $RUNNER_WORKSPACE/AppRun $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/
         $RUNNER_WORKSPACE/appimagetool $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir $GITHUB_WORKSPACE/CIC.AppImage
         git add $GITHUB_WORKSPACE/CIC.AppImage
