@@ -96,9 +96,9 @@ jobs:
         
     - name: Download Appimagetools
       run: |
-        wget https://github.com/AppImage/AppImageKit/releases/download/latest/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
+        wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
         chmod a+x $RUNNER_WORKSPACE/appimagetool
-        wget https://github.com/AppImage/AppImageKit/releases/download/latest/AppRun-x86_64 -O $RUNNER_WORKSPACE/AppRun
+        wget https://github.com/AppImage/AppImageKit/releases/latest/download/AppRun-x86_64 -O $RUNNER_WORKSPACE/AppRun
         chmod a+x $RUNNER_WORKSPACE/AppRun
         
     - name: Build AppImage and push
