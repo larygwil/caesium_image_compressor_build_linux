@@ -77,6 +77,16 @@ jobs:
         cp /tmp/ldd_after_dep.txt ldd_after_dep.txt
         find /lib/x86_64-linux-gnu/ | sort | uniq | sort | uniq | sort > all-libs_after.txt
     
+    - name: compare before and after
+      run: |
+        cd latest-build_ubuntu-lts/out
+        comm -13 ldd_before_dep.txt ldd_after_dep.txt | sed 's/^.*=> //g' > new_deps.txt
+        cd $GITHUB_WORKSPACE/AppDir/usr/lib 
+        while read -r line
+        do
+          cp -v "$line" .
+        done < $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/new_deps.txt
+    
     - name: push ldd list
       run: |
         git add latest-build_ubuntu-lts/out
