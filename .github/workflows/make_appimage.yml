@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  push:
-    branches:
-      - ci
+  #push:
+    #branches:
+      #- ci
            
 jobs:
   make_appimage:
@@ -65,7 +65,7 @@ jobs:
 
     - name: Show files after install Qt 6
       run: |
-        find /lib
+        find /usr/lib
         find $RUNNER_WORKSPACE
         
     - name: List CIC binary ldd after install dep 
