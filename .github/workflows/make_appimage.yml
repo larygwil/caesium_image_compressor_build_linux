@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  #push:
-    #branches:
-      #- ci
+  push:
+    branches:
+      - ci
            
 jobs:
   make_appimage:
@@ -50,13 +50,14 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.2.*'
+        version: '6.3.*'
         host: 'linux'
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
         modules: 'qtimageformats'
-        archives: "qttranslations qttools qtsvg qtdeclarative qtbase icu"
+        archives: " qttools qtsvg  qtbase icu"
         setup-python: 'false'
+
 
     - name: Show info after install Qt6
       run: |
@@ -73,6 +74,7 @@ jobs:
         cd latest-build_ubuntu-lts/out
         ldd "Caesium Image Compressor" > ldd_after_dep.txt
         ldd libcaesium.so >> ldd_after_dep.txt
+        objdump -T "Caesium Image Compressor" > objdump.txt
         sed -i 's/(.*)//g' ldd_after_dep.txt
         cat ldd_after_dep.txt  | sort | uniq | sort | uniq | sort > /tmp/ldd_after_dep.txt
         cp /tmp/ldd_after_dep.txt ldd_after_dep.txt
