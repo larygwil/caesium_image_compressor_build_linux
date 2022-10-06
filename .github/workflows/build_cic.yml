@@ -117,12 +117,13 @@ jobs:
         rm -rf latest-build_ubuntu-lts/* 
         cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
         find $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
+        tar -cvf artifact.tar latest-build_ubuntu-lts
         
     - name: upload artiface
       uses: actions/upload-artifact@v3
       with:
         name: built_on_ubuntu-lts
-        path: $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
+        path: $GITHUB_WORKSPACE/artifact.tar
         
         
         
