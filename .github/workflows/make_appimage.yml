@@ -96,16 +96,8 @@ jobs:
         cd $RUNNER_WORKSPACE
         export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib/
         ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir --plugin qt
-
-# - name: Build AppImage
-#   uses: AppImageCrafters/build-appimage-action@master
-#   env:
-#     UPDATE_INFO: gh-releases-zsync|AppImageCrafters|qt-hello-world|latest|*x86_64.AppImage.zsync
-#   with:
-#     recipe: AppImageBuilder.yml
-    
-    
-    
+        
+        
     - name: Upload Artifacts    
     - uses: actions/upload-artifact@v3
       with:
