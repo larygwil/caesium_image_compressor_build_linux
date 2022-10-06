@@ -67,22 +67,27 @@ jobs:
         workflow: build_cic.yml 
         workflow_conclusion: success
         
-    - name: list downloaded files
+    - name: extract downloaded tar 
       run: |
-        find $RUNNER_WORKSPACE
+        mkdir -p  $RUNNER_WORKSPACE/artifact_extract
+        cd $RUNNER_WORKSPACE/artifact_extract
+        tar --bzip2 -xvf $GITHUB_WORKSPACE/built_on_ubuntu-lts/artifact.tar
+        find . 
+        
+    # - name: list downloaded files
+    #   run: |
+    #     find $RUNNER_WORKSPACE
         
 
-    - name: Download Appimagetools
+    - name: Download Appimagetools (just AppRun)
       run: |
-        wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
-        chmod a+x $RUNNER_WORKSPACE/appimagetool
+#        wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
+#        chmod a+x $RUNNER_WORKSPACE/appimagetool
         wget https://github.com/AppImage/AppImageKit/releases/latest/download/AppRun-x86_64 -O $RUNNER_WORKSPACE/AppRun
-        chmod a+x $RUNNER_WORKSPACE/AppRun
+        cp $RUNNER_WORKSPACE/AppRun $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/
+        chmod a+x $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/AppRun
         
-    - name: Build AppImage and push
-      run: |
-        cp $RUNNER_WORKSPACE/AppRun $RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir/
-        $RUNNER_WORKSPACE/appimagetool $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir $GITHUB_WORKSPACE/CIC.AppImage
+
       
     - name: Download linuxdeploy
       run: |
@@ -94,8 +99,9 @@ jobs:
     - name: run linuxdeploy
       run: |
         cd $RUNNER_WORKSPACE
-        export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib/
-        ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir --plugin qt
+        export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/usr/lib/
+        ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir --plugin qt
+# linuxdeploy will create .AppImage file name from .desktop file program name
 
 # - name: Build AppImage
 #   uses: AppImageCrafters/build-appimage-action@master
