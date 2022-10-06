@@ -41,14 +41,14 @@ jobs:
     - name: make needed  files
       run: |
         pwd
-        mkdir out
-        mkdir AppDir
-        mkdir -p out/subd
+        mkdir _out_
+        mkdir _AppDir_
+        mkdir -p _out_/subd
         touch file_1.txt file_2.txt file_3.txt
         echo "hello" >> file_1.txt
-        echo "out out out" > out/out3.txt
-        echo "haha" > AppDir/haha.txt
-        echo "sss" > out/subd/s.txt
+        echo "_out_ _out_ _out_" > _out_/out3.txt
+        echo "haha" > _AppDir_/haha.txt
+        echo "sss" > _out_/subd/s.txt
         find .
 
 
