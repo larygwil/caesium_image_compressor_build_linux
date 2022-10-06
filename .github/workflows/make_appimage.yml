@@ -61,11 +61,11 @@ jobs:
         find $RUNNER_WORKSPACE
         
 
-    # - name: download artifact
-    #   uses: dawidd6/action-download-artifact@v2
-    #   with:
-    #     workflow: build_cic.yml 
-    #     workflow_conclusion: success
+    - name: download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build_cic.yml 
+        workflow_conclusion: success
         
     - name: list downloaded files
       run: |
@@ -96,10 +96,18 @@ jobs:
         cd $RUNNER_WORKSPACE
         export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib/
         ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir --plugin qt
-        
-        
+
+# - name: Build AppImage
+#   uses: AppImageCrafters/build-appimage-action@master
+#   env:
+#     UPDATE_INFO: gh-releases-zsync|AppImageCrafters|qt-hello-world|latest|*x86_64.AppImage.zsync
+#   with:
+#     recipe: AppImageBuilder.yml
+    
+    
+    
     - name: Upload Artifacts    
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: AppImage
         path: ${{ runner.workspace }}/Caesium_Image_Compressor-x86_64.AppImage
