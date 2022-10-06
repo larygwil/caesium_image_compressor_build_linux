@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  #push:
-    #branches:
-      #- ci
+  push:
+    branches:
+      - ci
            
 jobs:
   make_appimage:
@@ -33,16 +33,7 @@ jobs:
         git config --list
         env
         
-    - name: List CIC binary ldd before install dep 
-      run: |
-        cd latest-build_ubuntu-lts/out
-        ldd "Caesium Image Compressor" > ldd_before_dep.txt
-        ldd libcaesium.so >> ldd_before_dep.txt
-        sed -i 's/(.*)//g' ldd_before_dep.txt
-        cat ldd_before_dep.txt  | sort | uniq | sort | uniq | sort > /tmp/ldd_before_dep.txt
-        cp /tmp/ldd_before_dep.txt ldd_before_dep.txt
-        find /lib/x86_64-linux-gnu/  | sort | uniq | sort | uniq | sort > all-libs_before.txt
-    
+ 
     - name: Install cargo vulkan xkb
       run: |
         sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev
@@ -50,7 +41,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.3.*'
+        version: '6.2.*'
         host: 'linux'
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
@@ -69,30 +60,18 @@ jobs:
         find /usr/lib
         find $RUNNER_WORKSPACE
         
-    - name: List CIC binary ldd after install dep 
-      run: |
-        cd latest-build_ubuntu-lts/out
-        ldd "Caesium Image Compressor" > ldd_after_dep.txt
-        ldd libcaesium.so >> ldd_after_dep.txt
-        objdump -T "Caesium Image Compressor" > objdump.txt
-        sed -i 's/(.*)//g' ldd_after_dep.txt
-        cat ldd_after_dep.txt  | sort | uniq | sort | uniq | sort > /tmp/ldd_after_dep.txt
-        cp /tmp/ldd_after_dep.txt ldd_after_dep.txt
-        find /lib/x86_64-linux-gnu/ | sort | uniq | sort | uniq | sort > all-libs_after.txt
-    
-    - name: compare before and after
-      run: |
-        cd latest-build_ubuntu-lts/out
-        comm -13 ldd_before_dep.txt ldd_after_dep.txt | sed 's/^.*=> //g' > new_deps.txt
-        cat ldd_after_dep.txt | grep "=> /home/runner" | sed 's/^.*=> //g' > qt_deps.txt
-    
-    - name: push ldd list
-      run: |
-        git add latest-build_ubuntu-lts/out
-        git commit -m 'push all-libs & ldd' || true
-        git push || true 
+
+    - name: download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build_cic.yml 
+        workflow_conclusion: success
         
+    - name: list downloaded files
+      run: |
+        find $RUNNER_WORKSPACE
         
+
     - name: Download Appimagetools
       run: |
         wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
@@ -102,44 +81,24 @@ jobs:
         
     - name: Build AppImage and push
       run: |
-        cat $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/ldd_after_dep.txt | grep "=>" | grep -v "not found" | sed 's/^.*=> //g' > /tmp/all-ldd.txt
-        cd $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib 
-        while read -r line
-        do
-          cp -v "$line" .
-        done < $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/new_deps.txt
+        cp $RUNNER_WORKSPACE/AppRun $RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir/
         
-        cat $GITHUB_WORKSPACE/latest-build_ubuntu-lts/out/all-libs_after.txt | grep -E "\.so\b" | grep  -E "vulkan|xcb|xkb|X11|GL" > /tmp/manual-deps.txt
-        while read -r line
-        do
-          cp -v "$line" .
-        done < /tmp/manual-deps.txt
-        
-        find  $Qt6_DIR |  grep -E -i "qt6svg.*.so\b" > /tmp/qt6svg-libs.txt
-        while read -r line
-        do
-          cp -v "$line" .
-        done < /tmp/qt6svg-libs.txt
-        
-        
-        cp -ar $QT_PLUGIN_PATH $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/
-
-        cp $RUNNER_WORKSPACE/AppRun $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir/
         $RUNNER_WORKSPACE/appimagetool $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir $GITHUB_WORKSPACE/CIC.AppImage
-        git add $GITHUB_WORKSPACE/CIC.AppImage
-        git commit -m 'push .AppImage file' || true
-        git push || true
       
-    #- name: Download linuxdeployqt
-      #run: |
-        #cd $RUNNER_WORKSPACE
-        #wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-        #chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+    - name: Download linuxdeploy
+      run: |
+        cd $RUNNER_WORKSPACE
+        wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+        wget https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+        chmod a+x *.AppImage
         
-    #- name: Run linuxdeployqt
-      #run: |
-        #$RUNNER_WORKSPACE/linuxdeployqt-continuous-x86_64.AppImage $GITHUB_WORKSPACE/latest-build_ubuntu-lts/AppDir
+    - name: run linuxdeploy
+      run: |
+        cd $RUNNER_WORKSPACE
+        export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir/usr/lib/
+        ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/latest-build_ubuntu-lts/AppDir --plugin qt
         
+
         
         
     #- name: Build AppImage
@@ -149,10 +108,11 @@ jobs:
       #with:
         #recipe: AppImageBuilder.yml
         
-    #- name: Upload Artifacts    
-      #- uses: actions/upload-artifact@v2
-        #with:
-          #name: AppImage
+    - name: Upload Artifacts    
+      - uses: actions/upload-artifact@v3
+        with:
+          name: AppImage
+          path: ${{ runner.workspace }}/Caesium_Image_Compressor-x86_64.AppImage
 
       
       
