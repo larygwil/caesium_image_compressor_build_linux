@@ -5,9 +5,9 @@ on:
   
   workflow_dispatch:
 
-  push:
-    branches:
-      - ci
+  # push:
+  #   branches:
+  #     - ci
            
 jobs:
   test_upload_artifact:
