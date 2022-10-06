@@ -61,11 +61,11 @@ jobs:
         find $RUNNER_WORKSPACE
         
 
-    - name: download artifact
-      uses: dawidd6/action-download-artifact@v2
-      with:
-        workflow: build_cic.yml 
-        workflow_conclusion: success
+    # - name: download artifact
+    #   uses: dawidd6/action-download-artifact@v2
+    #   with:
+    #     workflow: build_cic.yml 
+    #     workflow_conclusion: success
         
     - name: list downloaded files
       run: |
