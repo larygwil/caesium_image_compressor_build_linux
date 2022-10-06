@@ -75,8 +75,10 @@ jobs:
         find .
         
 
-    - name: Download Appimagetools just AppRun
+    - name: Download Appimagetools 
       run: |
+        wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage -O $RUNNER_WORKSPACE/appimagetool
+        chmod a+x $RUNNER_WORKSPACE/appimagetool
         wget https://github.com/AppImage/AppImageKit/releases/latest/download/AppRun-x86_64 -O $RUNNER_WORKSPACE/AppRun
         cp $RUNNER_WORKSPACE/AppRun $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/
         chmod a+x $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/AppRun
@@ -100,8 +102,14 @@ jobs:
         cd $RUNNER_WORKSPACE
         export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/usr/lib/
         ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir --plugin qt 
-# linuxdeploy will create .AppImage file name from .desktop file program name
 
+        
+    - name: run appimagetool
+      run: |
+        cd $RUNNER_WORKSPACE
+        $RUNNER_WORKSPACE/appimagetool --version
+        $RUNNER_WORKSPACE/appimagetool -v $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir $RUNNER_WORKSPACE/Caesium_Image_Compressor-x86_64.AppImage
+        
 # - name: Build AppImage
 #   uses: AppImageCrafters/build-appimage-action@master
 #   env:
