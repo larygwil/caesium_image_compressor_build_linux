@@ -74,10 +74,7 @@ jobs:
         tar --bzip2 -xvf $GITHUB_WORKSPACE/built_on_ubuntu-lts/artifact.tar
         find . 
         
-    # - name: list downloaded files
-    #   run: |
-    #     find $RUNNER_WORKSPACE
-        
+
 
     - name: Download Appimagetools just AppRun
       run: |
