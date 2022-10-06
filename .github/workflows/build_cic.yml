@@ -119,9 +119,9 @@ jobs:
         
     - name: upload artiface
       uses: actions/upload-artifact@v3
-        with:
-          name: built_on_ubuntu-lts
-          path: $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
+      with:
+        name: built_on_ubuntu-lts
+        path: $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
         
         
         
