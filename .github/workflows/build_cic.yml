@@ -115,7 +115,8 @@ jobs:
         git checkout .
         mkdir -p latest-build_ubuntu-lts 
         rm -rf latest-build_ubuntu-lts/* 
-        cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    latest-build_ubuntu-lts/
+        cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
+        find $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
         
     - name: upload artiface
       uses: actions/upload-artifact@v3
