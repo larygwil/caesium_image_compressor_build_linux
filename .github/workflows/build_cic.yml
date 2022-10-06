@@ -1,9 +1,9 @@
 name: Build on Ubuntu LTS
 
 on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 0 9 4 *'  # every year's 04-09 (April 9th)
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   - cron:  '0 0 9 4 *'  # every year's 04-09 (April 9th)
     
   
   workflow_dispatch:
@@ -42,12 +42,12 @@ jobs:
         
     - name: Install cargo vulkan xkb
       run: |
-        sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev
+        sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev 
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.3.*'
+        version: '6.2.*'
         host: 'linux'
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
@@ -68,7 +68,7 @@ jobs:
         
     - name: Download CIC source
       run: |
-        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.1.0.zip -O $RUNNER_WORKSPACE/CIC-source.zip
+        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.2.1.zip -O $RUNNER_WORKSPACE/CIC-source.zip
         unzip $RUNNER_WORKSPACE/CIC-source.zip -d $RUNNER_WORKSPACE/CIC-source
 # TODO dynamic latest version
         
@@ -108,7 +108,7 @@ jobs:
         mv "Caesium Image Compressor" usr/bin/CaesiumImageCompressor
         mv libcaesium.so usr/lib/
         
-    - name: Push to binaries branch
+    - name: Preprare to upload artifact
       run: |
         cd $GITHUB_WORKSPACE
         git checkout binaries
@@ -116,9 +116,12 @@ jobs:
         mkdir -p latest-build_ubuntu-lts 
         rm -rf latest-build_ubuntu-lts/* 
         cp -ar $RUNNER_WORKSPACE/out $RUNNER_WORKSPACE/AppDir    latest-build_ubuntu-lts/
-        git add latest-build_ubuntu-lts
-        git commit -m 'upload built result files' || true
-        git push || true 
+        
+    - name: upload artiface
+      uses: actions/upload-artifact@v3
+        with:
+          name: built_on_ubuntu-lts
+          path: $GITHUB_WORKSPACE/latest-build_ubuntu-lts/
         
         
         

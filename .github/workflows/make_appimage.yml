@@ -1,9 +1,9 @@
 name: Make AppImage on Ubuntu LTS
 
 on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 0 24 4 *'  # every year's 04-24 (April 24th)
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   - cron:  '0 0 24 4 *'  # every year's 04-24 (April 24th)
     
   
   workflow_dispatch:
