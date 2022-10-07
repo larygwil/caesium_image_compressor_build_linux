@@ -52,7 +52,7 @@ jobs:
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
         modules: 'qtimageformats'
-        archives: " qttools qtsvg  qtbase icu  qttranslations"
+        archives: " qttools qtsvg  qtbase icu  qttranslations qtdeclarative"
         setup-python: 'false'
 
     - name: Show info after install Qt6
