@@ -26,15 +26,16 @@ jobs:
     - name: download appimage file
       run: |
         wget https://github.com/larygwil/caesium-image-compressor/releases/download/v2.2.1/Caesium_Image_Compressor-v2.2.1-x86_64.AppImage -O runthis.AppImage
+        chmod a+x runthis.AppImage
         
     - name: run in xvfb
       run: |
         Xvfb -ac :3 &
         sleep 6
         export DISPLAY=:3 
-        runthis.AppImage &
+        ./runthis.AppImage &
         sleep 12
-        xwd -root screenshot.xwd
+        xwd -root -out screenshot.xwd
         convert xwd:screenshot.xwd png:screenshot.png
         exit
         
