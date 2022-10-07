@@ -6,9 +6,9 @@ on:
   
   workflow_dispatch:
 
-  # push:
-  #   branches:
-  #     - ci
+  push:
+    branches:
+      - ci
            
 jobs:
   screenshots_on_xvfb:
