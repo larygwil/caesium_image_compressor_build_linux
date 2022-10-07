@@ -20,10 +20,7 @@ jobs:
       
     - name: Insall Xvfb
       run: |
-        sudo apt-get install -y xvfb imagemagick \ 
-        libdrm2 libexpat1 libfontconfig1 libfreetype6 libgl1 libpciaccess0 libx11-6 libx11-xcb1 libxau6 libxcb1 ca-certificates openssl \
-        libxcb-dri2-0 libxcb-dri3-0 libxcb-present0 libxcb-randr0 libxcb-render0 libxcb-shape0 xkb-data libxkbcommon-x11-0 xorg dbus-x11 \
-        libxcb-shm0 libxcb-sync1 libxcb-util1 libxcb-xfixes0 libxcb-xkb1 libxcursor1 libxdamage1 libxdmcp6 libxfixes3 libxrender1 libxshmfence1 libxxf86vm1 
+        sudo apt-get install -y xvfb imagemagick           libdrm2 libexpat1 libfontconfig1 libfreetype6 libgl1 libpciaccess0 libx11-6 libx11-xcb1 libxau6 libxcb1 ca-certificates openssl           libxcb-dri2-0 libxcb-dri3-0 libxcb-present0 libxcb-randr0 libxcb-render0 libxcb-shape0 xkb-data libxkbcommon-x11-0 xorg dbus-x11           libxcb-shm0 libxcb-sync1 libxcb-util1 libxcb-xfixes0 libxcb-xkb1 libxcursor1 libxdamage1 libxdmcp6 libxfixes3 libxrender1 libxshmfence1 libxxf86vm1 
 # https://github.com/AppImageCrafters/tests-env/blob/master/ubuntu-focal.docker
 
     - name: download appimage file
@@ -39,6 +36,7 @@ jobs:
         sleep 12
         xwd -root screenshot.xwd
         convert xwd:screenshot.xwd png:screenshot.png
+        exit
         
     - name: upload artiface
       uses: actions/upload-artifact@v3
