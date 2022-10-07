@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  # push:
-  #   branches:
-  #     - ci
+  push:
+    branches:
+      - ci
            
 jobs:
   build_cic:
@@ -47,7 +47,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.2.*'
+        version: '6.3.1'
         host: 'linux'
         target: 'desktop'
 #          dir: ${{ github.workspace }}/qt/
