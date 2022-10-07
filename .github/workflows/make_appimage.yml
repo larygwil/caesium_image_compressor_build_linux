@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  push:
-    branches:
-      - ci
+  # push:
+  #   branches:
+  #     - ci
            
 jobs:
   make_appimage:
