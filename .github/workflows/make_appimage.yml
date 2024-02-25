@@ -62,7 +62,10 @@ jobs:
       run: |
         find /usr/lib
         find $RUNNER_WORKSPACE
-        
+    
+    - name: delete unwanted qt file
+      run: |
+        find $RUNNER_WORKSPACE/Qt  -name "libqsqlmimer.so"   -exec rm -r {} \;
 
     - name: download artifact
       uses: dawidd6/action-download-artifact@v2
