@@ -42,8 +42,7 @@ jobs:
         
     - name: Install cargo vulkan xkb
       run: |
-        sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev 
-        
+        sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev  libxcb-cursor0 libxcb-cursor-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev       
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -55,6 +54,7 @@ jobs:
         arch: 'gcc_64'
         modules: 'qtimageformats'        
         setup-python: 'false'
+        cache: true
         
     - name: Show info after install Qt6
       run: |
