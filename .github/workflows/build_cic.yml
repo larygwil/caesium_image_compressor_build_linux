@@ -8,9 +8,9 @@ on:
   
   workflow_dispatch:
 
-  # push:
-  #   branches:
-  #     - ci
+  push:
+    branches:
+      - ci
            
 jobs:
   build_cic:
@@ -68,7 +68,7 @@ jobs:
         
     - name: Download CIC source
       run: |
-        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.2.1.zip -O $RUNNER_WORKSPACE/CIC-source.zip
+        wget https://github.com/Lymphatus/caesium-image-compressor/archive/refs/tags/v2.6.0.zip -O $RUNNER_WORKSPACE/CIC-source.zip
         unzip $RUNNER_WORKSPACE/CIC-source.zip -d $RUNNER_WORKSPACE/CIC-source
 # TODO dynamic latest version
         
