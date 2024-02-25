@@ -44,17 +44,18 @@ jobs:
       run: |
         sudo apt-get install -y cargo libvulkan-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxkbfile-dev 
         
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.3.1'
+        aqtversion: '==3.1.*'
+        version: '6.6.2'
         host: 'linux'
         target: 'desktop'
-#          dir: ${{ github.workspace }}/qt/
-        modules: 'qtimageformats'
-        archives: " qttools qtsvg  qtbase icu  qttranslations qtdeclarative"
+        arch: 'gcc_64'
+        modules: 'qtimageformats'        
         setup-python: 'false'
-
+        
     - name: Show info after install Qt6
       run: |
         dpkg --list
