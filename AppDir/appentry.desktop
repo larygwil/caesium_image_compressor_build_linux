@@ -4,6 +4,6 @@ Type=Application
 Categories=Qt;Graphics
 Name=Caesium Image Compressor
 Comment=Quickly reduce image files size (and resolution, if you want) 
-Exec=CaesiumImageCompressor
+Exec=caesium-image-compressor
 Icon=logo
 

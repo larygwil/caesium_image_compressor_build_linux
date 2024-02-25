@@ -83,7 +83,7 @@ jobs:
         echo ""
         find build_dir
         echo ""
-        ldd "build_dir/Caesium Image Compressor"
+        ldd "build_dir/caesium-image-compressor"
         echo ""
         ldd "build_dir/libcaesium-prefix/src/libcaesium/target/release/libcaesium.so" 
 # TODO export不会传到下一个步骤（step）   
@@ -96,7 +96,7 @@ jobs:
         cd $RUNNER_WORKSPACE/CIC-source
         cd `ls`  
         cp "build_dir/libcaesium-prefix/src/libcaesium/target/release/libcaesium.so" $RUNNER_WORKSPACE/out/
-        cp "build_dir/Caesium Image Compressor" $RUNNER_WORKSPACE/out/
+        cp "build_dir/caesium-image-compressor" $RUNNER_WORKSPACE/out/
         cp -ar "resources/icons/icon."* "resources/icons/logo"*     $RUNNER_WORKSPACE/out/
         find $RUNNER_WORKSPACE/out/
         
@@ -106,7 +106,7 @@ jobs:
         cp -ar  $GITHUB_WORKSPACE/AppDir/* $RUNNER_WORKSPACE/AppDir/
         cd $RUNNER_WORKSPACE/AppDir
         mkdir -p usr/bin usr/lib 
-        mv "Caesium Image Compressor" usr/bin/CaesiumImageCompressor
+        mv "caesium-image-compressor" usr/bin/caesium-image-compressor
         mv libcaesium.so usr/lib/
         
     - name: Preprare to upload artifact

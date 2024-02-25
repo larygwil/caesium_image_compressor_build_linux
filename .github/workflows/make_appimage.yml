@@ -95,7 +95,7 @@ jobs:
         
     - name: copy icon file
       run: |
-        cp $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/logo.png $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/CaesiumImageCompressor.png
+        cp $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/logo.png $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/caesium-image-compressor.png
         cp $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/logo.png $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/usr/share/icons/hicolor/512x512/logo.png
         
     - name: run linuxdeploy
