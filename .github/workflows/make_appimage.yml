@@ -107,12 +107,13 @@ jobs:
       run: |
         cp $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/logo.png $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/caesium-image-compressor.png
         cp $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/logo.png $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/usr/share/icons/hicolor/512x512/logo.png
+        cp $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/logo.png $RUNNER_WORKSPACE/logo.png
         
     - name: run linuxdeploy
       run: |
         cd $RUNNER_WORKSPACE
         export LD_LIBRARY_PATH=$RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir/usr/lib/
-        ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir --plugin qt 
+        ./linuxdeploy-x86_64.AppImage --appdir $RUNNER_WORKSPACE/artifact_extract/latest-build_ubuntu-lts/AppDir --plugin qt -i logo.png
 
         
     - name: run appimagetool
