@@ -75,6 +75,7 @@ jobs:
 
     - name: download manually uploaded artifact
       run: |
+        mkdir -p $GITHUB_WORKSPACE/built_on_ubuntu-lts/
         wget https://github.com/larygwil/caesium_image_compressor_build_linux/releases/download/tmp_2.6.0_ar/artifact.tar -O $GITHUB_WORKSPACE/built_on_ubuntu-lts/artifact.tar
         
     - name: extract downloaded tar 
