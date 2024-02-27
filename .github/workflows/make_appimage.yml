@@ -67,11 +67,15 @@ jobs:
       run: |
         find $RUNNER_WORKSPACE/Qt  -name "libqsqlmimer.so"   -exec rm -r {} \;
 
-    - name: download artifact
-      uses: dawidd6/action-download-artifact@v2
-      with:
-        workflow: build_cic.yml 
-        workflow_conclusion: success
+# - name: download artifact
+#   uses: dawidd6/action-download-artifact@v2
+#   with:
+#     workflow: build_cic.yml 
+#     workflow_conclusion: success
+
+    - name: download manually uploaded artifact
+      run: |
+        wget https://github.com/larygwil/caesium_image_compressor_build_linux/releases/download/tmp_2.6.0_ar/artifact.tar -O $GITHUB_WORKSPACE/built_on_ubuntu-lts/artifact.tar
         
     - name: extract downloaded tar 
       run: |
